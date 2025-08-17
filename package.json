@@ -1,0 +1,22 @@
+{
+  "name": "my-expenses",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:docker": "docker-compose up --build",
+    "dev:docker": "docker-compose up",
+    "stop:docker": "docker-compose down"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ranggadwias/my-expenses.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ranggadwias/my-expenses/issues"
+  },
+  "homepage": "https://github.com/ranggadwias/my-expenses#readme"
+}

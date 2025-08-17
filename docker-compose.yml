@@ -1,0 +1,26 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: my-expenses-backend-dev
+    ports:
+      - "5000:5000"
+    environment:
+      - MONGODB_URI=mongodb://mongodb:27017/my-expenses
+      - PORT=5000
+    volumes:
+      - ./backend:/app
+    command: npm run dev
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:6.0
+    container_name: my-expenses-mongodb-dev
+    ports:
+      - "27017:27017"
+    volumes:
+      - my-expenses-mongo-dev:/data/db
+
+volumes:
+  my-expenses-mongo-dev:
