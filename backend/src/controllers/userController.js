@@ -60,3 +60,7 @@ export const loginUser = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
+export const updateUser = async (req, res) => {};
+
+export const deleteUser = async (req, res) => {};
