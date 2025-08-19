@@ -49,3 +49,28 @@ export const createTransaction = async (req, res) => {
     return res.status(500).json({ error: "Internal server error." });
   }
 };
+
+export const getAllTransactions = async (req, res) => {
+  try {
+    const userIdFromToken = req.userId;
+
+    if (!userIdFromToken) {
+      return res.status(401).json({ error: "Access denied. Please login." });
+    }
+
+    const transactions = await Transaction.find({
+      userId: userIdFromToken,
+    }).sort({ date: -1 });
+
+    if (transactions.length === 0) {
+      return res.status(404).json({ error: "Transactions not found." });
+    }
+
+    return res
+      .status(200)
+      .json({ message: "Transactions retrieved successfully.", transactions });
+  } catch (error) {
+    console.error("Get Transactions error:", error);
+    return res.status(500).json({ error: "Internal server error." });
+  }
+};
