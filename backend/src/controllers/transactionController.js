@@ -1,0 +1,51 @@
+import Transaction from "../models/Transaction.js";
+
+export const createTransaction = async (req, res) => {
+  try {
+    const { type, category, amount, note, date } = req.body;
+    const userIdFromToken = req.userId;
+
+    if (!userIdFromToken) {
+      return res.status(401).json({ error: "Unauthorized." });
+    }
+
+    if (!type?.trim() || !category?.trim() || !note?.trim() || !date?.trim()) {
+      return res.status(400).json({ error: "All fields are required." });
+    }
+
+    const normalizedType = type.toLowerCase();
+    if (normalizedType !== "expense" && normalizedType !== "income") {
+      return res
+        .status(400)
+        .json({ error: "Type must be 'expense' or 'income'." });
+    }
+
+    const parsedAmount = Number(amount);
+    if (isNaN(parsedAmount) || parsedAmount <= 0) {
+      return res
+        .status(400)
+        .json({ error: "Amount must be a positive number." });
+    }
+
+    const formattedDate = new Date(date);
+    if (isNaN(formattedDate.getTime())) {
+      return res.status(400).json({ error: "Invalid date format." });
+    }
+
+    const transaction = await Transaction.create({
+      userId: userIdFromToken,
+      type: normalizedType,
+      category,
+      amount: parsedAmount,
+      note,
+      date: formattedDate,
+    });
+
+    return res
+      .status(201)
+      .json({ message: "Transaction created successfully.", transaction });
+  } catch (error) {
+    console.error("Create error:", error);
+    return res.status(500).json({ error: "Internal server error." });
+  }
+};
