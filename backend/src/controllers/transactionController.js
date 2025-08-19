@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import Transaction from "../models/Transaction.js";
 
 export const createTransaction = async (req, res) => {
@@ -169,6 +170,41 @@ export const updateTransaction = async (req, res) => {
     });
   } catch (error) {
     console.error("Update Transaction error:", error);
+    return res.status(500).json({ error: "Internal server error." });
+  }
+};
+
+export const deleteTransaction = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userIdFromToken = req.userId;
+
+    if (!userIdFromToken) {
+      return res.status(401).json({ error: "Access denied. Please login." });
+    }
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "Invalid transaction ID." });
+    }
+
+    const transaction = await Transaction.findById(id);
+
+    if (!transaction) {
+      return res.status(404).json({ error: "Transaction not found." });
+    }
+
+    if (transaction.userId.toString() !== userIdFromToken.toString()) {
+      return res.status(403).json({ error: "Unauthorized access." });
+    }
+
+    await transaction.deleteOne();
+
+    return res.status(200).json({
+      message: "Transaction deleted successfully.",
+      transactionId: transaction._id,
+    });
+  } catch (error) {
+    console.error("Delete Transaction error:", error);
     return res.status(500).json({ error: "Internal server error." });
   }
 };
