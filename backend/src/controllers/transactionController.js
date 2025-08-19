@@ -74,3 +74,31 @@ export const getAllTransactions = async (req, res) => {
     return res.status(500).json({ error: "Internal server error." });
   }
 };
+
+export const getTransactionById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userIdFromToken = req.userId;
+
+    if (!userIdFromToken) {
+      return res.status(401).json({ error: "Access denied. Please login." });
+    }
+
+    const transaction = await Transaction.findById(id);
+
+    if (!transaction) {
+      return res.status(404).json({ error: "Transaction not found." });
+    }
+
+    if (transaction.userId.toString() !== userIdFromToken.toString()) {
+      return res.status(403).json({ error: "Unauthorized access." });
+    }
+
+    return res
+      .status(200)
+      .json({ message: "Transaction retrieved successfully.", transaction });
+  } catch (error) {
+    console.error("Get Transactions by id error:", error);
+    return res.status(500).json({ error: "Internal server error." });
+  }
+};
