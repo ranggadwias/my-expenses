@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Transaction from "../models/Transaction.js";
+import { buildFilterFromQuery } from "../utils/buildFilter.js";
 
 export const createTransaction = async (req, res) => {
   try {
@@ -59,9 +60,9 @@ export const getAllTransactions = async (req, res) => {
       return res.status(401).json({ error: "Access denied. Please login." });
     }
 
-    const transactions = await Transaction.find({
-      userId: userIdFromToken,
-    }).sort({ date: -1 });
+    const filter = buildFilterFromQuery(req.query, userIdFromToken);
+
+    const transactions = await Transaction.find(filter).sort({ date: -1 });
 
     if (transactions.length === 0) {
       return res.status(404).json({ error: "Transactions not found." });
