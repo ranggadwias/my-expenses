@@ -6,7 +6,7 @@ export const createTransaction = async (req, res) => {
     const userIdFromToken = req.userId;
 
     if (!userIdFromToken) {
-      return res.status(401).json({ error: "Unauthorized." });
+      return res.status(401).json({ error: "Access denied. Please login." });
     }
 
     if (!type?.trim() || !category?.trim() || !note?.trim() || !date?.trim()) {
