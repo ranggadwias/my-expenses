@@ -1,10 +1,14 @@
+import { Navigate, Route, Routes } from "react-router-dom";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
+
 function App() {
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <h1 className="text-3xl font-bold">
-        Setup project FE: Vite + React + Tailwind CSS
-      </h1>
-    </div>
+    <Routes>
+      <Route path="/" element={<Navigate to="login" replace />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/login" element={<Login />} />
+    </Routes>
   );
 }
 
