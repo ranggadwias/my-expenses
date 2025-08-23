@@ -29,7 +29,7 @@ const Login = () => {
         password: "",
       });
       setErrorMessage("");
-      navigate("/dashboard");
+      navigate("/");
     } catch (error) {
       const apiError = error.response.data.error;
       setErrorMessage(apiError);
