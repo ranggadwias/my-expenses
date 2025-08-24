@@ -1,3 +1,5 @@
+import CardRowContainer from "../components/CardRowContainer";
+import CategoryPieChart from "../components/Chart/CategoryPieChart";
 import Navbar from "../components/Navbar";
 import SummaryCard from "../components/SummaryCard";
 import { useDashboard } from "../hooks/useDashboard";
@@ -13,11 +15,11 @@ const Dashboard = () => {
         <p className="text-3xl mb-5">
           Hello, <span className="font-medium">{user.name}</span>
         </p>
-        <div className="flex justify-between gap-x-8">
+        <CardRowContainer>
           <SummaryCard title="Balance" amount={formatRupiah(balance)} />
           <SummaryCard title="Income" amount={formatRupiah(totalIncome)} />
           <SummaryCard title="Expense" amount={formatRupiah(totalExpense)} />
-        </div>
+        </CardRowContainer>
       </div>
     </div>
   );
