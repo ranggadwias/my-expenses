@@ -35,14 +35,18 @@ const Dashboard = () => {
         <CardRowContainer>
           <Card title="Expenses by Category">
             {expensePerCategory.length === 0 ? (
-              "No transactions available"
+              <div className="flex items-center justify-center h-full text-sm">
+                No transactions available
+              </div>
             ) : (
               <CategoryPieChart data={expensePerCategory} />
             )}
           </Card>
           <Card title="Monthly Spending Trend">
             {isMonthlyEmpty ? (
-              "No monthly data available"
+              <div className="flex items-center justify-center h-full text-sm">
+                No monthly data available
+              </div>
             ) : (
               <MonthlyTrendChart data={monthlyExpenses} />
             )}
