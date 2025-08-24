@@ -61,6 +61,22 @@ export const loginUser = async (req, res) => {
   }
 };
 
+export const getUser = async (req, res) => {
+  try {
+    const userIdFromToken = req.userId;
+
+    const user = await User.findById(userIdFromToken).select("-password").lean();
+    if (!user) {
+      return res.status(404).json({ error: "User not found." });
+    }
+
+    return res.status(200).json(user);
+  } catch (error) {
+    console.error("Get User error:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 export const updateUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
