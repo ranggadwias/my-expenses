@@ -9,15 +9,17 @@ export const useDashboard = () => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const [transactionsData, userData] = await Promise.all([
-          fetchTransactions(),
-          fetchUser(),
-        ]);
-
+        const transactionsData = await fetchTransactions();
         setTransactions(transactionsData);
+      } catch (error) {
+        console.error("Error fetching transactions:", error);
+      }
+
+      try {
+        const userData = await fetchUser();
         setUser(userData);
       } catch (error) {
-        console.error(error);
+        console.error("Error fetching user:", error);
       }
     };
     getData();
@@ -42,5 +44,19 @@ export const useDashboard = () => {
     };
   }, [transactions]);
 
-  return { totalIncome, totalExpense, balance, user };
+  const expensePerCategory = useMemo(() => {
+    const categoryMap = {};
+    transactions.forEach((transaction) => {
+      if (transaction.type === "expense") {
+        categoryMap[transaction.category] =
+          (categoryMap[transaction.category] || 0) + transaction.amount;
+      }
+    });
+    return Object.entries(categoryMap).map(([category, total]) => ({
+      category,
+      total,
+    }));
+  }, [transactions]);
+
+  return { totalIncome, totalExpense, balance, user, expensePerCategory };
 };
