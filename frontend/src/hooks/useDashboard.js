@@ -58,5 +58,50 @@ export const useDashboard = () => {
     }));
   }, [transactions]);
 
-  return { totalIncome, totalExpense, balance, user, expensePerCategory };
+  const monthlyExpenses = useMemo(() => {
+    const monthMap = {};
+    const monthLabels = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+
+    monthLabels.forEach((m) => (monthMap[m] = 0));
+
+    transactions.forEach(({ type, amount, date }) => {
+      if (type === "expense") {
+        const d = new Date(date);
+        const month = monthLabels[d.getMonth()];
+        monthMap[month] = (monthMap[month] || 0) + amount;
+      }
+    });
+
+    return monthLabels.map((month) => ({
+      month,
+      total: monthMap[month],
+    }));
+  }, [transactions]);
+
+  const isMonthlyEmpty = useMemo(() => {
+    return monthlyExpenses.every((item) => item.total === 0);
+  }, [monthlyExpenses]);
+
+  return {
+    totalIncome,
+    totalExpense,
+    balance,
+    user,
+    expensePerCategory,
+    monthlyExpenses,
+    isMonthlyEmpty
+  };
 };

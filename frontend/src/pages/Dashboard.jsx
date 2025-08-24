@@ -1,14 +1,22 @@
 import Card from "../components/Card";
 import CardRowContainer from "../components/CardRowContainer";
 import CategoryPieChart from "../components/Chart/CategoryPieChart";
+import MonthlyTrendChart from "../components/Chart/MonthlyTrendChart";
 import Navbar from "../components/Navbar";
 import SummaryCard from "../components/SummaryCard";
 import { useDashboard } from "../hooks/useDashboard";
 import { formatRupiah } from "../utils/formatters";
 
 const Dashboard = () => {
-  const { totalIncome, totalExpense, balance, user, expensePerCategory } =
-    useDashboard();
+  const {
+    totalIncome,
+    totalExpense,
+    balance,
+    user,
+    expensePerCategory,
+    monthlyExpenses,
+    isMonthlyEmpty,
+  } = useDashboard();
 
   return (
     <div>
@@ -25,11 +33,18 @@ const Dashboard = () => {
         </CardRowContainer>
 
         <CardRowContainer>
-          <Card>
+          <Card title="Expenses by Category">
             {expensePerCategory.length === 0 ? (
               "No transactions available"
             ) : (
               <CategoryPieChart data={expensePerCategory} />
+            )}
+          </Card>
+          <Card title="Monthly Spending Trend">
+            {isMonthlyEmpty ? (
+              "No monthly data available"
+            ) : (
+              <MonthlyTrendChart data={monthlyExpenses} />
             )}
           </Card>
         </CardRowContainer>
