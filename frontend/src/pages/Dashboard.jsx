@@ -1,3 +1,4 @@
+import Card from "../components/Card";
 import CardRowContainer from "../components/CardRowContainer";
 import CategoryPieChart from "../components/Chart/CategoryPieChart";
 import Navbar from "../components/Navbar";
@@ -6,7 +7,8 @@ import { useDashboard } from "../hooks/useDashboard";
 import { formatRupiah } from "../utils/formatters";
 
 const Dashboard = () => {
-  const { totalIncome, totalExpense, balance, user } = useDashboard();
+  const { totalIncome, totalExpense, balance, user, expensePerCategory } =
+    useDashboard();
 
   return (
     <div>
@@ -15,10 +17,21 @@ const Dashboard = () => {
         <p className="text-3xl mb-5">
           Hello, <span className="font-medium">{user.name}</span>
         </p>
+
         <CardRowContainer>
           <SummaryCard title="Balance" amount={formatRupiah(balance)} />
           <SummaryCard title="Income" amount={formatRupiah(totalIncome)} />
           <SummaryCard title="Expense" amount={formatRupiah(totalExpense)} />
+        </CardRowContainer>
+
+        <CardRowContainer>
+          <Card>
+            {expensePerCategory.length === 0 ? (
+              "No transactions available"
+            ) : (
+              <CategoryPieChart data={expensePerCategory} />
+            )}
+          </Card>
         </CardRowContainer>
       </div>
     </div>
