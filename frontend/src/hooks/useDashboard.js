@@ -4,6 +4,7 @@ import { fetchUser } from "../services/authService";
 
 export const useDashboard = () => {
   const [transactions, setTransactions] = useState([]);
+  const [recentTransactions, setRecentTransactions] = useState([]);
   const [user, setUser] = useState({});
 
   useEffect(() => {
@@ -11,6 +12,9 @@ export const useDashboard = () => {
       try {
         const transactionsData = await fetchTransactions();
         setTransactions(transactionsData);
+
+        const filteredTransactions = transactionsData.slice(0, 5);
+        setRecentTransactions(filteredTransactions);
       } catch (error) {
         console.error("Error fetching transactions:", error);
       }
@@ -96,12 +100,13 @@ export const useDashboard = () => {
   }, [monthlyExpenses]);
 
   return {
+    recentTransactions,
     totalIncome,
     totalExpense,
     balance,
     user,
     expensePerCategory,
     monthlyExpenses,
-    isMonthlyEmpty
+    isMonthlyEmpty,
   };
 };

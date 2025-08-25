@@ -4,11 +4,13 @@ import CategoryPieChart from "../components/Chart/CategoryPieChart";
 import MonthlyTrendChart from "../components/Chart/MonthlyTrendChart";
 import Navbar from "../components/Navbar";
 import SummaryCard from "../components/SummaryCard";
+import TransactionTable from "../components/TransactionTable";
 import { useDashboard } from "../hooks/useDashboard";
 import { formatRupiah } from "../utils/formatters";
 
 const Dashboard = () => {
   const {
+    recentTransactions,
     totalIncome,
     totalExpense,
     balance,
@@ -50,6 +52,12 @@ const Dashboard = () => {
             ) : (
               <MonthlyTrendChart data={monthlyExpenses} />
             )}
+          </Card>
+        </CardRowContainer>
+
+        <CardRowContainer>
+          <Card title="Recent Transactions">
+            <TransactionTable transactions={recentTransactions} />
           </Card>
         </CardRowContainer>
       </div>
