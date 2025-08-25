@@ -23,7 +23,7 @@ const Dashboard = () => {
   return (
     <div>
       <Navbar />
-      <div className="px-12 py-8">
+      <div className="px-12 py-8 pt-22">
         <p className="text-3xl mb-5">
           Hello, <span className="font-medium">{user.name}</span>
         </p>
