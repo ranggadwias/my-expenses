@@ -26,8 +26,16 @@ const TransactionTable = ({ transactions }) => {
             <td className="border-t border-gray-300 p-2 capitalize">
               {transaction.category}
             </td>
-            <td className="border-t border-gray-300 p-2">
-              Rp {Number(transaction.amount).toLocaleString("id-ID")}
+            <td
+              className={`border-t border-gray-300 p-2 ${
+                transaction.type === "income"
+                  ? "text-green-600"
+                  : "text-red-500"
+              }`}
+            >
+              {transaction.type === "income"
+                ? `Rp ${Number(transaction.amount).toLocaleString("id-ID")}`
+                : `-Rp ${Number(transaction.amount).toLocaleString("id-ID")}`}
             </td>
             <td className="border-t border-gray-300 p-2 capitalize">
               {transaction.type}
